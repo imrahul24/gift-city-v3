@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { roiColor } from '../utils/formatters';
 import { generateSyntheticBoundary } from '../utils/geo';
 import geoData from '../data/gift_city.geojson';
+import { LANDMARKS } from '../utils/landmarks';
 
 const MAPTILER_KEY = 'UNTKL1aWlNVwRZtvgWWA';
 

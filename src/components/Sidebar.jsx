@@ -3,24 +3,19 @@ import logo from '../assets/logo.png';
 import { useTheme } from '../context/ThemeContext';
 
 const NAV = [
-  { id:'map',          icon:'🗺',  label:'Geographic Map',   desc:'Interactive plot view' },
-  { id:'dashboard',    icon:'📊',  label:'Performance',      desc:'Analytics & KPIs' },
-  { id:'list',         icon:'🏙',  label:'Plot Registry',    desc:'Browse all plots' },
-  { id:'transactions', icon:'💸',  label:'Transactions',     desc:'Sales history' },
+  { id:'map',      icon:'🗺', label:'Geographic Map',  desc:'Interactive plot view'   },
+  { id:'list',     icon:'🏙', label:'Plot Registry',   desc:'Browse all plots'        },
+  { id:'calc',     icon:'🧮', label:'Investment Calc', desc:'Model your returns'      },
+  { id:'momentum', icon:'🚀', label:'City Momentum',   desc:'Infrastructure progress' },
 ];
 
-// All zone names derived from GeoJSON (developable zones only)
 const ZONES = [
   'CBD City Center',
   'Industrial Knowledge & IT Phase',
   'Mixed Use - Commercial & Residential Phase',
-  'Logistics Phase',
-  'Tourism Phase',
-  'Industrial Phase',
-  'Infrastructure Phase',
-  'Residential  Medium to High Density Phase',
-  'Recreational & Sports Phase',
-  'Public Facility Zone',
+  'Logistics Phase', 'Tourism Phase', 'Industrial Phase',
+  'Infrastructure Phase', 'Residential  Medium to High Density Phase',
+  'Recreational & Sports Phase', 'Public Facility Zone',
 ];
 
 export default function Sidebar({ activeView, setActiveView, filters, setFilters, plots = [] }) {
@@ -37,14 +32,14 @@ export default function Sidebar({ activeView, setActiveView, filters, setFilters
         <p className="text-[10px] font-bold uppercase tracking-widest px-3 mb-2" style={{color:'var(--text3)'}}>Navigation</p>
         {NAV.map(item => (
           <button key={item.id} onClick={() => setActiveView(item.id)}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-left transition-all duration-150 group"
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl mb-1 text-left transition-all duration-150"
             style={{
               background: activeView===item.id ? 'var(--surface2)' : 'transparent',
               border: activeView===item.id ? '1px solid var(--border2)' : '1px solid transparent',
             }}>
             <span className="text-base w-6 text-center flex-shrink-0 leading-none">{item.icon}</span>
             <div className="min-w-0">
-              <div className="text-sm font-semibold leading-tight transition-colors"
+              <div className="text-sm font-semibold leading-tight"
                 style={{color: activeView===item.id ? 'var(--text)' : 'var(--text3)'}}>
                 {item.label}
               </div>
@@ -76,58 +71,45 @@ export default function Sidebar({ activeView, setActiveView, filters, setFilters
         </div>
       </div>
 
-      {/* FILTERS */}
-      <div className="px-3 pb-2 pt-3" style={{borderTop:'1px solid var(--border)'}}>
-        <p className="text-[10px] font-bold uppercase tracking-widest px-1 mb-3" style={{color:'var(--text3)'}}>Filters</p>
-
-        <div className="mb-3">
-          <label className="block text-[10px] font-bold uppercase tracking-wider px-1 mb-1.5" style={{color:'var(--text3)'}}>
-            Availability
-          </label>
-          <select
-            value={filters.status}
-            onChange={e => setFilters({ ...filters, status: e.target.value })}
-            className="themed-select"
-          >
-            <option value="">All Listings</option>
-            <option value="Available">Available</option>
-            <option value="Sold">Sold</option>
-            <option value="Reserved">Reserved</option>
-          </select>
+      {/* FILTERS — only show on map/list views */}
+      {(activeView === 'map' || activeView === 'list') && (
+        <div className="px-3 pb-2 pt-3" style={{borderTop:'1px solid var(--border)'}}>
+          <p className="text-[10px] font-bold uppercase tracking-widest px-1 mb-3" style={{color:'var(--text3)'}}>Filters</p>
+          <div className="mb-3">
+            <label className="block text-[10px] font-bold uppercase tracking-wider px-1 mb-1.5" style={{color:'var(--text3)'}}>Availability</label>
+            <select value={filters.status} onChange={e => setFilters({...filters, status:e.target.value})} className="themed-select">
+              <option value="">All Listings</option>
+              <option value="Available">Available</option>
+              <option value="Sold">Sold</option>
+              <option value="Reserved">Reserved</option>
+            </select>
+          </div>
+          <div className="mb-3">
+            <label className="block text-[10px] font-bold uppercase tracking-wider px-1 mb-1.5" style={{color:'var(--text3)'}}>Zone</label>
+            <select value={filters.zone} onChange={e => setFilters({...filters, zone:e.target.value})} className="themed-select">
+              <option value="">All Zones</option>
+              {ZONES.map(z => <option key={z} value={z}>{z}</option>)}
+            </select>
+          </div>
+          <button onClick={() => setFilters({status:'', zone:''})}
+            className="w-full py-2 rounded-xl text-xs font-bold transition-colors"
+            style={{background:'var(--surface2)', border:'1px solid var(--border2)', color:'var(--text3)'}}>
+            ↺ Reset Filters
+          </button>
         </div>
-
-        <div className="mb-3">
-          <label className="block text-[10px] font-bold uppercase tracking-wider px-1 mb-1.5" style={{color:'var(--text3)'}}>
-            Zone
-          </label>
-          <select
-            value={filters.zone}
-            onChange={e => setFilters({ ...filters, zone: e.target.value })}
-            className="themed-select"
-          >
-            <option value="">All Zones</option>
-            {ZONES.map(z => <option key={z} value={z}>{z}</option>)}
-          </select>
-        </div>
-
-        <button onClick={() => setFilters({ status:'', zone:'' })}
-          className="w-full py-2 rounded-xl text-xs font-bold transition-colors"
-          style={{ background:'var(--surface2)', border:'1px solid var(--border2)', color:'var(--text3)' }}>
-          ↺ Reset Filters
-        </button>
-      </div>
+      )}
 
       {/* LEGEND */}
       <div className="mt-auto mx-3 mb-3 rounded-xl p-3" style={{border:'1px solid var(--border)'}}>
         <p className="text-[9px] font-bold uppercase tracking-widest mb-2" style={{color:'var(--text3)'}}>Map Legend</p>
         {[
           { color:'#00c47a', darkColor:'#00f5a0', label:'Available' },
-          { color:'#b38900', darkColor:'#ffd32a', label:'Reserved' },
-          { color:'#e03040', darkColor:'#ff4757', label:'Sold' },
+          { color:'#b38900', darkColor:'#ffd32a', label:'Reserved'  },
+          { color:'#e03040', darkColor:'#ff4757', label:'Sold'       },
         ].map(l => (
           <div key={l.label} className="flex items-center gap-2 py-1">
             <div className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-              style={{ background: dark ? l.darkColor : l.color, boxShadow:`0 0 6px ${dark?l.darkColor:l.color}80` }} />
+              style={{background:dark?l.darkColor:l.color, boxShadow:`0 0 6px ${dark?l.darkColor:l.color}80`}} />
             <span className="text-xs font-medium" style={{color:'var(--text2)'}}>{l.label}</span>
           </div>
         ))}

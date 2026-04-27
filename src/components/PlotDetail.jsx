@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { fmtCr, roiColor } from '../utils/formatters';
 import { useTheme } from '../context/ThemeContext';
+import { LANDMARKS, distKm } from '../utils/landmarks';
 
 function ScoreRing({ value, color, label, delay = 0 }) {
   const [anim, setAnim] = useState(0);
@@ -281,6 +282,30 @@ export default function PlotDetail({ plot, onClose, onCompare, isComparing }) {
               )}
             </div>
           ))}
+
+          {/* Landmark distances */}
+          <div className="text-[9px] font-bold uppercase tracking-widest flex items-center gap-2 mb-3"
+            style={{ color: 'var(--text3)' }}>
+            <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+            Nearby Landmarks
+            <div className="flex-1 h-px" style={{ background: 'var(--border)' }} />
+          </div>
+          <div className="rounded-xl overflow-hidden mb-5" style={{ border: '1px solid var(--border)' }}>
+            {LANDMARKS.map((lm, i) => (
+              <div key={lm.id} className="flex items-center justify-between px-4 py-3"
+                style={{ background: i%2===0 ? 'var(--surface2)' : 'transparent', borderBottom: i<LANDMARKS.length-1 ? '1px solid var(--border)' : 'none' }}>
+                <div className="flex items-center gap-2">
+                  <span className="text-base leading-none">{lm.icon}</span>
+                  <span className="text-sm font-medium" style={{ color: 'var(--text2)' }}>{lm.name}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="font-display font-bold text-sm" style={{ color: lm.color }}>
+                    {distKm(p.lat, p.lon, lm.lat, lm.lon)} km
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {p.transaction && <TxCard tx={p.transaction} visible={visible} />}
           <div className="h-6" />

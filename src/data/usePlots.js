@@ -1,47 +1,30 @@
 ﻿import geoData from './gift_city.geojson';
 
-// ── ONLY developable land zones (no water/roads/rivers/buffers) ──
 const PLOT_ZONES = new Set([
   'CBD City Center',
   'Industrial Knowledge & IT Phase',
   'Mixed Use - Commercial & Residential Phase',
-  'Logistics Phase',
-  'Tourism Phase',
-  'Industrial Phase',
-  'Infrastructure Phase',
-  'Residential  Medium to High Density Phase',
-  'Recreational & Sports Phase',
-  'Public Facility Zone',
+  'Logistics Phase', 'Tourism Phase', 'Industrial Phase',
+  'Infrastructure Phase', 'Residential  Medium to High Density Phase',
+  'Recreational & Sports Phase', 'Public Facility Zone',
 ]);
 
-// excluded (442 polygons): Waterbody(152), Green Park(59), River(42), Gamtal(33),
-// Road(32), Village Buffer(32), Bridge(26), Agriculture(20), Coastal Zone(10),
-// Solar Energy Park(2), TP SCHEME(6), TP sub-zones(27), 919098094.763(1)
-
 const ZONE_TIER = {
-  'CBD City Center':                             'Premium',
-  'Industrial Knowledge & IT Phase':             'High',
-  'Mixed Use - Commercial & Residential Phase':  'High',
-  'Tourism Phase':                               'Mid',
-  'Residential  Medium to High Density Phase':   'Mid',
-  'Logistics Phase':                             'Mid',
-  'Recreational & Sports Phase':                 'Standard',
-  'Infrastructure Phase':                        'Standard',
-  'Industrial Phase':                            'Standard',
-  'Public Facility Zone':                        'Standard',
+  'CBD City Center': 'Premium',
+  'Industrial Knowledge & IT Phase': 'High',
+  'Mixed Use - Commercial & Residential Phase': 'High',
+  'Tourism Phase': 'Mid', 'Residential  Medium to High Density Phase': 'Mid',
+  'Logistics Phase': 'Mid', 'Recreational & Sports Phase': 'Standard',
+  'Infrastructure Phase': 'Standard', 'Industrial Phase': 'Standard',
+  'Public Facility Zone': 'Standard',
 };
 
 const ZONE_PSM = {
-  'CBD City Center':                             90000,
-  'Industrial Knowledge & IT Phase':             62000,
-  'Mixed Use - Commercial & Residential Phase':  52000,
-  'Tourism Phase':                               47000,
-  'Residential  Medium to High Density Phase':   42000,
-  'Logistics Phase':                             33000,
-  'Recreational & Sports Phase':                 27000,
-  'Infrastructure Phase':                        24000,
-  'Industrial Phase':                            22000,
-  'Public Facility Zone':                        18000,
+  'CBD City Center': 90000, 'Industrial Knowledge & IT Phase': 62000,
+  'Mixed Use - Commercial & Residential Phase': 52000, 'Tourism Phase': 47000,
+  'Residential  Medium to High Density Phase': 42000, 'Logistics Phase': 33000,
+  'Recreational & Sports Phase': 27000, 'Infrastructure Phase': 24000,
+  'Industrial Phase': 22000, 'Public Facility Zone': 18000,
 };
 
 const STATUSES = ['Available','Available','Available','Reserved','Sold'];
@@ -107,7 +90,7 @@ function generatePlots() {
       }
 
       return {
-        id:                 `GC-${String(idx + 1).padStart(3, '0')}`,
+        id: `GC-${String(idx + 1).padStart(3, '0')}`,
         zone, tier: ZONE_TIER[zone] || 'Standard', status,
         area_sqm: Math.round(areaSqm), area_sqft: areaSqft,
         price_psf: psf, price_psm: psm, total_price: totalPrice,
@@ -119,4 +102,13 @@ function generatePlots() {
     });
 }
 
-export const PLOTS = generatePlots();
+// Generate once synchronously at import time
+const _plots = generatePlots();
+
+// loadPlots() returns a Promise for App.jsx compatibility
+export function loadPlots() {
+  return Promise.resolve(_plots);
+}
+
+// Also export synchronously for any component that needs it directly
+export const PLOTS = _plots;
