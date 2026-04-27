@@ -47,7 +47,7 @@ export default function TransactionRegistry({ plots, onSelectPlot }) {
             <thead style={{ background: '#1a1d2a' }}>
               <tr>
                 <Th label="Plot" k="id" />
-                <Th label="Zone" k="zone" />
+                <Th label="Zones" k="zone" />
                 <Th label="Buyer" k="buyer" />
                 <Th label="Sale Date" k="sale_date" />
                 <Th label="Sale Price" k="sale_price" />
