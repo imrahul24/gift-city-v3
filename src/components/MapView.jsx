@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import { useTheme } from '../context/ThemeContext';
 import { roiColor } from '../utils/formatters';
-import geoData from '../data/gift_city.geojson';
+
 import { generateSyntheticBoundary } from '../utils/geo';
 
 const MAPTILER_KEY   = 'UNTKL1aWlNVwRZtvgWWA';
-mapboxgl.accessToken = 'pk.placeholder';
+// MapLibre GL — free, no token needed
 
 const S_COL       = { Available:'#00f5a0', Reserved:'#ffd32a', Sold:'#ff4757' };
 const S_COL_LIGHT = { Available:'#00a862', Reserved:'#c49a00', Sold:'#d42030' };
@@ -125,15 +125,15 @@ function makePopupHTML(props, dark) {
   </div>`;
 }
 
-// Build all GeoJSON feature collections from imported geoData
-function buildGeoSources() {
-  const features = geoData.features.filter(f => f.geometry.type === 'Polygon');
-
-  const zones   = { type:'FeatureCollection', features: features.filter(f => ZONE_COLORS[f.properties.name]) };
-  const nature  = { type:'FeatureCollection', features: features.filter(f => NATURE_COLORS[f.properties.name]) };
-  const tp      = { type:'FeatureCollection', features: features.filter(f => f.properties.name?.startsWith('TP')) };
-
-  return { zones, nature, tp };
+// Build all GeoJSON feature collections — fetched from public/gift_city.geojson
+async function fetchGeoSources() {
+  const data = await fetch('/gift_city.geojson').then(r => r.json());
+  const features = data.features.filter(f => f.geometry.type === 'Polygon');
+  return {
+    zones:  { type:'FeatureCollection', features: features.filter(f => ZONE_COLORS[f.properties.name]) },
+    nature: { type:'FeatureCollection', features: features.filter(f => NATURE_COLORS[f.properties.name]) },
+    tp:     { type:'FeatureCollection', features: features.filter(f => f.properties.name?.startsWith('TP')) },
+  };
 }
 
 export default function MapView({ plots, allPlots, onSelectPlot, compareIds }) {
@@ -188,8 +188,8 @@ export default function MapView({ plots, allPlots, onSelectPlot, compareIds }) {
   }, []);
 
   // ── Add all map sources and layers ──
-  const addAllLayers = useCallback((map, isDark, initialVisible) => {
-    const { zones, nature, tp } = buildGeoSources();
+  const addAllLayers = useCallback(async (map, isDark, initialVisible) => {
+    const { zones, nature, tp } = await fetchGeoSources();
 
     // ── Nature layers (water, rivers, parks, roads) ──
     map.addSource('nature', { type:'geojson', data:nature });
