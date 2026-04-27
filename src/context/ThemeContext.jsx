@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false); // ← WHITE by default
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
   }, [dark]);

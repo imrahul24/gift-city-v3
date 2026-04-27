@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../assets/logo.png';
 import { useTheme } from '../context/ThemeContext';
 
 const NAV = [
@@ -132,8 +133,9 @@ export default function Sidebar({ activeView, setActiveView, filters, setFilters
         ))}
       </div>
 
-      <div className="pb-3 px-4 text-[10px] font-semibold" style={{color:'var(--text3)'}}>
-        © 2025 GIFT City Intelligence · v4.0
+      <div className="pb-3 px-4 flex items-center gap-2">
+        <img src={logo} alt="GIFT" style={{width:24, height:24, objectFit:'contain', opacity:0.6}} />
+        <span className="text-[10px] font-semibold" style={{color:'var(--text3)'}}>© 2025 GIFT City</span>
       </div>
     </aside>
   );

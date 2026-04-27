@@ -3,31 +3,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── DARK THEME (default) ── */
-:root, [data-theme="dark"] {
-  --bg:        #08090d;
-  --bg2:       #0f1117;
-  --surface:   #13151e;
-  --surface2:  #1a1d2a;
-  --surface3:  #21253a;
-  --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.12);
-  --text:      #f0f2ff;
-  --text2:     #a8adc8;
-  --text3:     #5a6080;
-  --accent:    #6c63ff;
-  --accent2:   #00f5a0;
-  --gold:      #ffd32a;
-  --red:       #ff4757;
-  --input-bg:  rgba(255,255,255,0.06);
-  --input-text:#f0f2ff;
-  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8adc8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-  --popup-bg:  rgba(8,9,13,0.97);
-  --map-style: "darkmatter";
-}
-
-/* ── LIGHT THEME ── */
-[data-theme="light"] {
+/* ── LIGHT THEME — default (:root) ── */
+:root, [data-theme="light"] {
   --bg:        #f4f5f9;
   --bg2:       #ffffff;
   --surface:   #ffffff;
@@ -46,24 +23,45 @@
   --input-text:#0f1117;
   --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%233a3f5c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   --popup-bg:  rgba(255,255,255,0.98);
-  --map-style: "streets";
 }
 
-*  { box-sizing: border-box; margin: 0; padding: 0; }
+/* ── DARK THEME ── */
+[data-theme="dark"] {
+  --bg:        #08090d;
+  --bg2:       #0f1117;
+  --surface:   #13151e;
+  --surface2:  #1a1d2a;
+  --surface3:  #21253a;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #f0f2ff;
+  --text2:     #a8adc8;
+  --text3:     #5a6080;
+  --accent:    #6c63ff;
+  --accent2:   #00f5a0;
+  --gold:      #ffd32a;
+  --red:       #ff4757;
+  --input-bg:  rgba(255,255,255,0.06);
+  --input-text:#f0f2ff;
+  --select-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a8adc8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  --popup-bg:  rgba(8,9,13,0.97);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
 html, body, #root { height: 100%; }
 body {
   font-family: 'DM Sans', sans-serif;
   background: var(--bg);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
 
-/* ── THEMED SELECT / INPUT ── */
+/* ── INPUTS & SELECTS ── */
 .themed-select {
   width: 100%;
   background: var(--input-bg) !important;
@@ -78,14 +76,11 @@ body {
   background-repeat: no-repeat !important;
   background-position: right 12px center !important;
   cursor: pointer;
-  transition: border-color 0.15s, background 0.3s;
+  transition: border-color 0.15s;
   outline: none;
 }
 .themed-select:focus { border-color: var(--accent) !important; }
-.themed-select option {
-  background: var(--surface2);
-  color: var(--text);
-}
+.themed-select option { background: var(--surface2); color: var(--text); }
 
 .themed-input {
   background: var(--input-bg);
@@ -103,50 +98,50 @@ body {
 .themed-input::placeholder { color: var(--text3); }
 
 /* ── STATUS PILLS ── */
-.pill-Available { background: rgba(0,245,160,0.15); color: #00c47a; border: 1px solid rgba(0,245,160,0.3); }
-.pill-Reserved  { background: rgba(255,211,42,0.15); color: #b38900; border: 1px solid rgba(255,211,42,0.3); }
-.pill-Sold      { background: rgba(255,71,87,0.15);  color: #e03040; border: 1px solid rgba(255,71,87,0.3); }
-[data-theme="dark"] .pill-Available { color: #00f5a0; }
-[data-theme="dark"] .pill-Reserved  { color: #ffd32a; }
-[data-theme="dark"] .pill-Sold      { color: #ff4757; }
+.pill-Available { background: rgba(0,179,119,0.12); color: #00a862; border: 1px solid rgba(0,179,119,0.3); }
+.pill-Reserved  { background: rgba(196,154,0,0.12);  color: #b38900; border: 1px solid rgba(196,154,0,0.3); }
+.pill-Sold      { background: rgba(224,48,64,0.12);  color: #e03040; border: 1px solid rgba(224,48,64,0.3); }
+[data-theme="dark"] .pill-Available { background:rgba(0,245,160,0.12); color:#00f5a0; border-color:rgba(0,245,160,0.3); }
+[data-theme="dark"] .pill-Reserved  { background:rgba(255,211,42,0.12); color:#ffd32a; border-color:rgba(255,211,42,0.3); }
+[data-theme="dark"] .pill-Sold      { background:rgba(255,71,87,0.12);  color:#ff4757; border-color:rgba(255,71,87,0.3); }
 
 /* ── SCORE CIRCLES ── */
-.score-high { color: #00c47a; border-color: rgba(0,196,122,0.4); background: rgba(0,196,122,0.08); }
-.score-mid  { color: #b38900; border-color: rgba(179,137,0,0.4);  background: rgba(179,137,0,0.08); }
-.score-low  { color: #e03040; border-color: rgba(224,48,64,0.4);  background: rgba(224,48,64,0.08); }
-[data-theme="dark"] .score-high { color: #00f5a0; border-color: rgba(0,245,160,0.4); background: rgba(0,245,160,0.08); }
-[data-theme="dark"] .score-mid  { color: #ffd32a; border-color: rgba(255,211,42,0.4); background: rgba(255,211,42,0.08); }
-[data-theme="dark"] .score-low  { color: #ff4757; border-color: rgba(255,71,87,0.4);  background: rgba(255,71,87,0.08); }
+.score-high { color:#00a862; border-color:rgba(0,168,98,0.4);  background:rgba(0,168,98,0.08); }
+.score-mid  { color:#b38900; border-color:rgba(179,137,0,0.4); background:rgba(179,137,0,0.08); }
+.score-low  { color:#e03040; border-color:rgba(224,48,64,0.4); background:rgba(224,48,64,0.08); }
+[data-theme="dark"] .score-high { color:#00f5a0; border-color:rgba(0,245,160,0.4); background:rgba(0,245,160,0.08); }
+[data-theme="dark"] .score-mid  { color:#ffd32a; border-color:rgba(255,211,42,0.4); background:rgba(255,211,42,0.08); }
+[data-theme="dark"] .score-low  { color:#ff4757; border-color:rgba(255,71,87,0.4);  background:rgba(255,71,87,0.08); }
 
-/* ── TOPBAR GRADIENT LINE ── */
+/* ── TOPBAR LINE ── */
 .topbar-line::after {
   content: '';
   position: absolute;
   bottom: -1px; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent);
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* ── ANIMATIONS ── */
-@keyframes panelSlideIn  { from { transform: translateX(100%); } to { transform: translateX(0); } }
-@keyframes panelSlideOut { from { transform: translateX(0); }    to { transform: translateX(100%); } }
 @keyframes fadeInUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 @keyframes scaleIn  { from { opacity:0; transform:scale(0.96); }      to { opacity:1; transform:scale(1); } }
 @keyframes barUp    { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
 
-.fade-in-up   { animation: fadeInUp 0.4s cubic-bezier(0.16,1,0.3,1) both; }
-.scale-in     { animation: scaleIn  0.3s cubic-bezier(0.16,1,0.3,1) both; }
-.compare-bar-anim { animation: barUp 0.35s cubic-bezier(0.16,1,0.3,1) both; }
+.fade-in-up       { animation: fadeInUp 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+.scale-in         { animation: scaleIn  0.3s cubic-bezier(0.16,1,0.3,1) both; }
+.compare-bar-anim { animation: barUp    0.35s cubic-bezier(0.16,1,0.3,1) both; }
 
-/* ── MAPBOX ── */
-.mapboxgl-ctrl-logo   { display: none !important; }
-.mapboxgl-ctrl-attrib { opacity: 0.25 !important; font-size: 9px !important; }
-.gc-popup .mapboxgl-popup-content {
+/* ── MAPLIBRE ── */
+.maplibregl-ctrl-logo   { display: none !important; }
+.maplibregl-ctrl-attrib { opacity: 0.25 !important; font-size: 9px !important; }
+.mapboxgl-ctrl-logo     { display: none !important; }
+.mapboxgl-ctrl-attrib   { opacity: 0.25 !important; font-size: 9px !important; }
+.mapboxgl-popup-content, .maplibregl-popup-content {
   background: var(--popup-bg) !important;
   border: 1px solid var(--border2) !important;
   border-radius: 14px !important;
   padding: 14px !important;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.4) !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.15) !important;
   color: var(--text) !important;
 }
-.gc-popup .mapboxgl-popup-tip { display: none !important; }
+.mapboxgl-popup-tip, .maplibregl-popup-tip { display: none !important; }
