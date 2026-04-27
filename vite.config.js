@@ -17,5 +17,9 @@ function geojsonPlugin() {
 
 export default defineConfig({
   plugins: [react(), geojsonPlugin()],
+  build: {
+    outDir: 'dist',
+    chunkSizeWarningLimit: 3000,
+  },
   server: { port: 5173 }
 })
